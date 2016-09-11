@@ -1,0 +1,16 @@
+Package: simachine
+Type: Package
+Title: Simulation Machine
+Version: 1.0
+Date: 2016-09-08
+Author: Krzysztof Sakrejda <krzysztof.sakrejda@gmail.com>
+Maintainer: Krzysztof Sakrejda <krzysztof.sakrejda@gmail.com>
+Description: A basic simulation framework that allows writing simulation code in
+    little isolated snippets and disallows silly things like overwriting immutable
+    state. Meant to be correct and hopefully fast.  The package only
+    uses basic R features and sets up simulation in environments
+    isolated from .GlobalEnv.  
+License: GPL-3
+Suggests:
+    testthat
+RoxygenNote: 5.0.1
