@@ -1,3 +1,4 @@
+library(simachine)
 set.seed(777)
 
 data <- new.env()
@@ -10,7 +11,6 @@ data$beta <- matrix(data=c(
 ), ncol=2)
 data$gamma <- .2
 data$sigma <- .1 
-data$.. <- ..
 
 data_transformations <- quote({})
 
@@ -40,7 +40,7 @@ generated_quantities <- quote({
   }
 })
 
-o <- run_one(data=data, data_transformations=data_transformations, 
+o <- forecast(data=data, data_transformations=data_transformations, 
          initial_states=initial_states, simulation=simulation,
          generated_quantities=generated_quantities, 
          n_steps=data$n_steps)
