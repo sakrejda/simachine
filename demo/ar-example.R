@@ -22,7 +22,7 @@ names(initial_states$theta) <- letters[1:data$n_locations]
 simulation <- quote({  
   theta <- mu + beta[,1]*theta + rnorm(n=n_locations, mean=0, sd=sigma)
   if (step > 2)
-    theta <- mu + beta[,1]*..(theta)[,step-1] + beta[,2]*..(theta)[,step-2] + 
+    theta <- mu + beta[,1]*..(theta)[,step-1] + beta[,2]*..(theta)[,step-2] +
       rnorm(n=n_locations, mean=0, sd=sigma)
   Lambda <- exp(theta)
 })
