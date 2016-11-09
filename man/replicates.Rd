@@ -6,8 +6,7 @@
 \usage{
 replicates(functions = new.env(), data = new.env(),
   data_transformations = quote({ }), simulation = quote({ }),
-  generated_quantities = quote({ }), output = function(m, n)
-  stop("Results will not be saved."), parameters = matrix(),
+  generated_quantities = quote({ }), parameters = matrix(),
   control = list(), sandbox = TRUE)
 }
 \arguments{
@@ -18,13 +17,12 @@ any additional functions needed by the simulation.}
 immutable data for the simulation.  It may include code
 snippets (e.g.-quote({a <- 3; o <- f(x)}))}
 
+\item{data_transformations}{code snippet run once, created by quoting a
+bracketed expression, (e.g.-quote({a <- 3; b <- 3*a})), which
+will be used to transform data once prior to simulation.}
+
 \item{simulation}{function defining a single simulation, taking
 'parameters' as arguments.}
-
-\item{output}{function used to persist data from the simulation
-environment.  Called from the simulation environment.
-Takes two arguments: the replicate number (m) and the
-parameter set number (n).}
 
 \item{parameters}{matrix of parameters defining the individual
 simulation, one row per simulation and one (named) column 
@@ -32,8 +30,8 @@ per parameter.}
 
 \item{control}{control list for generating replicates, includes
 elements: 1) size, the number of replicates to generate per 
-parameter set; 2) output, a function, run in the environment 
-of the simulation output, parameters, and control arguments, 
+parameter set; 2) output, a snippet run at the end of each
+simulation, should persist results. 
 used to summarize and persist simulation results.}
 
 \item{sandbox}{if TRUE the parent.env where the call is made will not

@@ -48,6 +48,7 @@ store <- function(x, from, to, step, n_steps) {
       eval(parse(text=paste0(x,'[',start,':',stop,',] <- value')), envir=to)
     } else 
       stop("Only vectors, matrices, arrays, and data frames are currently handled by 'store'.")
+    rm(value, envir=to)
   }
 }
 

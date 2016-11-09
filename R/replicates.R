@@ -15,9 +15,8 @@
 #'        quoting a bracketed expression, (e.g.-quote({a <- 3; b <-
 #'        -1*a}), which will be used to generate simulation output.  
 #'        This code can not modify the data.
-#' @param parameters matrix of parameters defining the individual
-#'        simulation, one row per simulation and one (named) column 
-#'        per parameter.
+#' @param parameters list of lists.  Each element is a list of parameter
+#'        values..
 #' @param control control list for generating replicates, includes
 #'        elements: 1) size, the number of replicates to generate per 
 #'        parameter set; 2) output, a snippet run at the end of each
@@ -33,29 +32,37 @@ replicates <- function(
   data_transformations = quote({}),
   simulation = quote({}), 
   generated_quantities = quote({}),
-  parameters = matrix(), 
+  parameters = list(),
   control = list(),
   sandbox=TRUE
 ) {
   M <- control[['size']]
   N <- length(parameters)
+  output <- new.env()
+  eval(data_transformations, data) 
   for ( m in 1:M ) {
-    for ( n in 1:N ) {
+    assign(x='step', value=m, envir=output)
+    output_m <- new.env()
+    for ( nn in 1:N ) {
+      assign(x='step', value=nn, envir=output_m)
       sandbox_env <- create_sandbox(sandbox)
+      move_all(from=data, to=sandbox_env)
       ## FIXME: move_all_functions should be in a try block.
       move_all_functions(from=functions, to=sandbox_env)
       simulation_env <- new.env(parent=sandbox_env)
-      move_all(from=data, to=sandbox_env)
-      eval(data_transformations, sandbox_env) 
-      move_all(from=parameters, to=sandbox_env)
+      move_all(from=list2env(parameters[[nn]]), to=simulation_env)
       eval(simulation, simulation_env)
       eval(generated_quantities, simulation_env)
-      assign(x='m', value=m, envir=simulation_env)
-      assign(x='n', value=n, envir=simulation_env)
-      eval(control[['output']], simulation_env)
+      for (name in control[['output']]) {
+        store(x=name, from=simulation_env, to=output_m,
+          step=nn, n_steps=N)
+      }
       rm(sandbox_env)      
     }
+    store_all(from=output_m, to=output, step=m, n_steps=M)
+    rm(output_m)
   }
+  return(output)
 }
 
 
