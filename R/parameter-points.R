@@ -12,7 +12,8 @@ random_parameter_points <- function(arg_bounds, n_points) {
     o[[name]] <- runif(n=n_points_per_dim, min=arg_bounds[[name]][1], 
       max=arg_bounds[[name]][[2]])
   }
-  points <- do.call(what=expand.grid, args=o)
+  points <- do.call(what=expand.grid, args=o) %>% 
+    apply(1, as.list)
   return(points)
 }
 
@@ -29,7 +30,19 @@ grid_parameter_points <- function(arg_bounds, n_points) {
     o[[name]] <- seq(from=arg_bounds[[name]][1], to=arg_bounds[[name]][1],
       length.out=n_points_per_dim)
   }
-  points <- do.call(what=expand.grid, args=o)
+  points <- do.call(what=expand.grid, args=o) %>%
+    apply(1, as.list)
+  return(points)
+}
+
+#' Expand a fixed grid of points in parameter space.
+#' @param arg_bounds, n_arg_points.
+#' @return data frame of points uniformly distributed in parameter
+#'         space.
+#' @export grid_parameter_points
+fixed_parameter_points <- function(arg_values) {
+  points <- do.call(what=expand.grid, args=arg_values) %>%
+    apply(1, as.list)
   return(points)
 }
 
