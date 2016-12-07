@@ -2,8 +2,10 @@
 
 export(..)
 export(create_sandbox)
+export(fixed_parameter_points)
 export(forecast)
 export(grid_parameter_points)
+export(is_leaf)
 export(move)
 export(random_parameter_points)
 export(random_parameter_trees)

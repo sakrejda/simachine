@@ -1,3 +1,18 @@
+#' Localize names
+#'
+#' Takes names of a list and inserts them as list elements.
+#'
+#' @param list
+#' @return list
+#' @export localize_names
+localize_names <- function(x) {
+  for (i in 1:length(x)) {
+    if (is.list(x[[i]]))
+      x[[i]][['name']] <- names(x)[[i]]
+  }
+  return(x)
+}
+
 
 #' Create a grid of points in parameter space with uniformly drawn
 #' random marginals for each parameter within parameter-specific bounds.
@@ -14,6 +29,8 @@ random_parameter_points <- function(arg_bounds, n_points) {
   }
   points <- do.call(what=expand.grid, args=o) %>% 
     apply(1, as.list)
+  for(i in 1:length(points))
+    points[[i]][['point_digest']] <- digest(points[[i]])
   return(points)
 }
 
@@ -32,6 +49,8 @@ grid_parameter_points <- function(arg_bounds, n_points) {
   }
   points <- do.call(what=expand.grid, args=o) %>%
     apply(1, as.list)
+  for(i in 1:length(points))
+    points[[i]][['point_digest']] <- digest(points[[i]])
   return(points)
 }
 
@@ -43,6 +62,8 @@ grid_parameter_points <- function(arg_bounds, n_points) {
 fixed_parameter_points <- function(arg_values) {
   points <- do.call(what=expand.grid, args=arg_values) %>%
     apply(1, as.list)
+  for(i in 1:length(points))
+    points[[i]][['point_digest']] <- digest(points[[i]])
   return(points)
 }
 

@@ -1,6 +1,12 @@
-
-
-#' Tree (multi-level list, not necessarily balanced) apply
+#' Tree apply
+#' 
+#' Applies a function to tree leaves only.
+#'
+#' In this terminology a tree is a multi-level list, 
+#' not necessarily balanced, and each tree branch ends
+#' in a node which is defined _only_ by the `leaf_def` function.
+#' At each leaf the `action_def` function is applied.
+#' 
 #' @param x the tree-shaped list
 #' @param leaf_def function which takes a node and returns TRUE only if
 #'        the node is a leaf.
@@ -20,7 +26,7 @@ tree_apply <- function(tree, leaf_def, action_def) {
 }
 
 #' Remove NULL leaves tree.
-#' @tree tree to trim.
+#' @param tree tree to trim.
 #' @return parameter tree with NULL values removed.
 tree_null_trim <- function(tree) {
   not_null <- function(x) !(is.null(x) | all(sapply(x, is.null)))
@@ -32,8 +38,8 @@ tree_null_trim <- function(tree) {
 
 
 #' Tree delete branches.
-#' @tree tree to delete branches from.
-#' @names a character vectors of parameters to remove.
+#' @param tree to delete branches from.
+#' @param names a character vectors of parameters to remove.
 #' @return a list of named parameters.
 tree_delete_branches <- function(tree, names) {
   stop("Set named branches to NULL.")
@@ -42,7 +48,7 @@ tree_delete_branches <- function(tree, names) {
 }
 
 #' Delete trees which are identical from a forest (list of trees).
-#' @forest a list of trees.
+#' @param forest a list of trees.
 #' @return a list of trees without duplicates.
 thin_forest <- function(forest) {
   for (i in 1:length(forest))
@@ -50,22 +56,6 @@ thin_forest <- function(forest) {
       if ( (i != j) && identical(forest[[i]], forest[[j]]))
         forest[[j]] <- NULL
   return(forest)
-}
-
-#' Create a grid of points in parameter space with uniformly drawn
-#' random marginals for each parameter within parameter-specific bounds.
-#' @param x, n_points.
-#' @return data frame of points uniformly distributed in parameter
-#'         space.
-#' @export random_parameter_trees
-random_parameter_trees <- function(arg_bounds, n_points) {
-  o <- list()
-  f <- is_leaf
-  g <- function(x) runif(n=1, min=x[['min']], max=x[['max']])
-  for ( i in 1:n_points ) {
-    o[[i]] <- tree_apply(arg_bounds, f, g)
-  }
-  return(o)
 }
 
 

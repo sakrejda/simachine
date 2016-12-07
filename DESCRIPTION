@@ -11,6 +11,8 @@ Description: A basic simulation framework that allows writing simulation code in
     uses basic R features and sets up simulation in environments
     isolated from .GlobalEnv.  
 License: GPL-3
+Depends:
+    digest
 Suggests:
     testthat
 RoxygenNote: 5.0.1

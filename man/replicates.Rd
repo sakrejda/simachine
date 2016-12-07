@@ -6,7 +6,7 @@
 \usage{
 replicates(functions = new.env(), data = new.env(),
   data_transformations = quote({ }), simulation = quote({ }),
-  generated_quantities = quote({ }), parameters = matrix(),
+  generated_quantities = quote({ }), parameters = list(),
   control = list(), sandbox = TRUE)
 }
 \arguments{
@@ -24,9 +24,8 @@ will be used to transform data once prior to simulation.}
 \item{simulation}{function defining a single simulation, taking
 'parameters' as arguments.}
 
-\item{parameters}{matrix of parameters defining the individual
-simulation, one row per simulation and one (named) column 
-per parameter.}
+\item{parameters}{list of lists.  Each element is a list of parameter
+values..}
 
 \item{control}{control list for generating replicates, includes
 elements: 1) size, the number of replicates to generate per 
